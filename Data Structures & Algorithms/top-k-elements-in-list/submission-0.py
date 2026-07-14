@@ -1,17 +1,25 @@
 class Solution:
+    # Complexities: O(n), O(n)
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        # Bucket sort is a technique that involves seperating elements into various buckets.
+        # Buckets can be used to sort elements based on their frequencies.
+
         count = {}
-        freq = [[] for i in range(len(nums)+ 1)]
+        for i in nums:
+            count[i] = count.get(i, 0) + 1
 
-        for num in nums:
-            count[num] = 1 + count.get(num, 0)
+        # The dict count now has KV pairs of elements and their frequencies. But in order to
+        # get k most, an indexed list is needed.
 
-        for num, cnt in count.items():
-            freq[cnt].append(num)
+        # This list uses indexing where each index is the frequency of all the element in it.
+        freq = [[] for i in range(len(nums) + 1)]
+        for elem, countElem in count.items():
+           freq[countElem].append(elem)
 
+        # Go backwards and get all necessary elements.
         res = []
         for i in range(len(freq) - 1, 0, -1):
             for num in freq[i]:
                 res.append(num)
                 if len(res) == k:
-                    return res
+                    return res 
